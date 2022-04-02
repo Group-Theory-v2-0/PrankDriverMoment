@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from telnetlib import NOP
+import kbedit
 
 def hookCallback(mouseEvent):
     if (type(mouseEvent) == mouse.MoveEvent):
@@ -25,12 +26,11 @@ def hookCallback(mouseEvent):
 
 
 isPaused = False
-
 screenWidth = get_monitors()[0].width
 screenHeight = get_monitors()[0].height
 
 root = Tk()
-root.geometry("400x400")
+root.geometry("200x200")
 root.overrideredirect(True)
 
 #textWindow = Tk()
@@ -61,34 +61,31 @@ def getEvents():
     global windowX
     global windowY
     global panel
+    count = 0 
     mouse.hook(hookCallback)
     reetikSetting = 0
-    #draw(canvas)
     dx = 0.05
     dy = 0.02
     while(1): 
         root.geometry("+" + str(int(windowX)) + "+" + str(int(windowY)))
+        root.attributes("-topmost", True)
         windowX = (windowX)%screenWidth
         windowY = windowY%screenHeight
         dt = datetime.now() - iteration
+        #print(count)
+        if(count >= 10000 and count < 12500):
+            isPaused = True
+        if(count >= 30000 and count < 32500):
+            isPaused = True
+
         if(not isPaused):
             windowX+=dx
             windowY+=dy
-
-#            if (windowX < screenWidth-400): 
-#                dx = random.randrange(0, 100, 1) / 100
-#            else:
-#                dx = (random.randrange(0, 100, 1) / 100)
-#            if (windowY < screenHeight-400): 
-#                dy = random.randrange(0, 100, 1) / 100
-#            else:
-#                dy = (random.randrange(0, 100, 1) / 100)
-
             if (windowX >= screenWidth-400):
                 dx = -(random.randrange(0, 50, 1) / 100)
                 panel.configure(image=reetikPicRight)
                 reetikSetting = True
-                isPaused = True
+                #isPaused = True
             elif (windowX <= 1):
                 dx = (random.randrange(0, 50, 1) / 100)
                 panel.configure(image=reetikPicLeft)
@@ -97,10 +94,17 @@ def getEvents():
                 dy = -(random.randrange(0, 50, 1) / 100)
             elif (windowY <= 1):
                 dy = (random.randrange(0, 50, 1) / 100)
-        elif(dt > timedelta(seconds=1)):
+        elif((dt > timedelta(seconds=1)) or isPaused):
             panel.configure(image=reetikPicCenter)
-            msgroot.geometry("+"+str(int(windowX-400)) + "+" + str(int(windowY-400)))
-            msg = Message(msgroot, text="ah yes my rfid chip mmmmmm")
+            msgroot.geometry("+"+str(int((screenWidth/2)-200)) + "+" + str(int((screenHeight/2)-200)))
+            if(count >= 10000 and count < 10100):
+                msg = Message(msgroot, text="Let me help you out here...")
+                kbedit.google_search_removal()
+                isPaused = False
+            if(count >= 30000 and count < 30100):
+                msg = Message(msgroot, text = "Ok, let's play a game. Click keys to beat minesweeper")
+                kbedit.minesweep_keys
+                isPaused = False
             msg.pack()
             msgroot.deiconify()
             msgroot.update()
@@ -117,6 +121,7 @@ def getEvents():
             
         #print(windowX)
         #time.sleep(5)
+        count +=1
         root.update()
         #textWindow.update()
 
