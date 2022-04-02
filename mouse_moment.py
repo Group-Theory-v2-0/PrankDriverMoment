@@ -64,8 +64,8 @@ def getEvents():
     mouse.hook(hookCallback)
     reetikSetting = 0
     #draw(canvas)
-    dx = 0
-    dy = 0
+    dx = 0.05
+    dy = 0.02
     while(1): 
         root.geometry("+" + str(int(windowX)) + "+" + str(int(windowY)))
         windowX = (windowX)%screenWidth
@@ -75,28 +75,28 @@ def getEvents():
             windowX+=dx
             windowY+=dy
 
-            if (windowX < screenWidth-400): 
-                dx = random.randrange(0, 100, 1) / 100
-            else:
-                dx = (random.randrange(0, 100, 1) / 100)
-            if (windowY < screenHeight-400): 
-                dy = random.randrange(0, 100, 1) / 100
-            else:
-                dy = (random.randrange(0, 100, 1) / 100)
-                
+#            if (windowX < screenWidth-400): 
+#                dx = random.randrange(0, 100, 1) / 100
+#            else:
+#                dx = (random.randrange(0, 100, 1) / 100)
+#            if (windowY < screenHeight-400): 
+#                dy = random.randrange(0, 100, 1) / 100
+#            else:
+#                dy = (random.randrange(0, 100, 1) / 100)
+
             if (windowX >= screenWidth-400):
-                dx = -dx
+                dx = -(random.randrange(0, 50, 1) / 100)
                 panel.configure(image=reetikPicRight)
                 reetikSetting = True
                 isPaused = True
             elif (windowX <= 1):
-                dx = -dx
+                dx = (random.randrange(0, 50, 1) / 100)
                 panel.configure(image=reetikPicLeft)
                 reetikSetting = False
             if (windowY >= screenHeight-400):
-                dy = -dy
+                dy = -(random.randrange(0, 50, 1) / 100)
             elif (windowY <= 1):
-                dy = -dy
+                dy = (random.randrange(0, 50, 1) / 100)
         elif(dt > timedelta(seconds=1)):
             panel.configure(image=reetikPicCenter)
             msgroot.geometry("+"+str(int(windowX-400)) + "+" + str(int(windowY-400)))
