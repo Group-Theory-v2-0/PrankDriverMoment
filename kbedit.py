@@ -2,14 +2,14 @@ import keyboard
 import time
 import winsound
 
-def google_search_removal():
+def google_search_removal(replace_with):
     keyboard.block_key('enter')
     while True:
         if keyboard.is_pressed('enter'):
             keyboard.send('ctrl+a')
             time.sleep(0.4)
             keyboard.send('backspace')
-            keyboard.write("Why I will always be single")
+            keyboard.write(replace_with)
             keyboard.send('enter')
             break
     keyboard.unblock_key('enter')
@@ -27,7 +27,6 @@ def minesweep_keys():
         elif keyboard.is_pressed('z') or keyboard.is_pressed('a') or keyboard.is_pressed('w') or keyboard.is_pressed('u') or keyboard.is_pressed('j') or keyboard.is_pressed('n'):
             winsound.Beep(4000, 200)
 
-
-google_search_removal()
+google_search_removal("Why I will always be single")
 
 minesweep_keys()
