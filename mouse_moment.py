@@ -22,8 +22,6 @@ def hookCallback(mouseEvent):
             #print(isPaused)
             global isPaused
             isPaused = False
-            print(isPaused)
-
 
 isPaused = False
 screenWidth = get_monitors()[0].width
@@ -38,7 +36,7 @@ root.overrideredirect(True)
 #textWindow.overrideredirect(True)
 msgroot = Tk()
 msgroot.geometry("300x300")
-#msg = Message(msgroot, text="Howdy, partner")
+msg = Message(msgroot, text="")
 #msg.pack()
 msgroot.withdraw()
 windowX = 2
@@ -50,6 +48,28 @@ reetikPicCenter = ImageTk.PhotoImage(Image.open("ReetikCenter.jpg"))
 panel = tkinter.Label(root, image = reetikPicLeft)
 panel.pack(side = "right", fill = "both", expand = "yes")
 
+def help():
+    global msg
+    global isPaused
+    panel.configure(image=reetikPicCenter)
+    isPaused = True
+    msg = Message(msgroot, text="Let's see if you're worthy of my help...")
+
+def reetik():
+    global msg
+    global isPaused
+    panel.configure(image=reetikPicCenter)
+    isPaused = True
+    msg = Message(msgroot, text="Yes?")
+
+def carissa():
+    global msg
+    global isPaused
+    panel.configure(image=reetikPicCenter)
+    kbedit.google_search_removal()
+    isPaused = True
+    msg = Message(msgroot, text="I fixed your search for you ♡")
+
 def saySomeStupidGarbageBecausePythonSucksAndIHateItSoMuchAllTheTime():
     root.withdraw()
     messagebox.showinfo("Howdy, partner", "HOWDY!")
@@ -57,7 +77,6 @@ def saySomeStupidGarbageBecausePythonSucksAndIHateItSoMuchAllTheTime():
 def getEvents():
     iteration = datetime.now()
     global isPaused
-    isPaused = False
     global windowX
     global windowY
     global panel
@@ -73,11 +92,11 @@ def getEvents():
         windowY = windowY%screenHeight
         dt = datetime.now() - iteration
         #print(count)
-        if(count >= 10000 and count < 12500):
-            isPaused = True
-        if(count >= 30000 and count < 32500):
-            isPaused = True
-
+#        if(count >= 10000 and count < 12500):
+#            isPaused = True
+#        if(count >= 30000 and count < 32500):
+#            isPaused = True
+        print("Before check pause: " + str(isPaused))
         if(not isPaused):
             windowX+=dx
             windowY+=dy
@@ -94,17 +113,22 @@ def getEvents():
                 dy = -(random.randrange(0, 50, 1) / 100)
             elif (windowY <= 1):
                 dy = (random.randrange(0, 50, 1) / 100)
-        elif((dt > timedelta(seconds=1)) or isPaused):
-            panel.configure(image=reetikPicCenter)
+            
+            for flag in kbedit.triggerWordDict:
+                if(kbedit.triggerWordDict[flag] == 1):
+                    kbedit.triggerWordDict[flag] = 0
+                    globals()[flag]()
+
+        elif((dt > timedelta(seconds=1)) and isPaused):
             msgroot.geometry("+"+str(int((screenWidth/2)-200)) + "+" + str(int((screenHeight/2)-200)))
-            if(count >= 10000 and count < 10100):
-                msg = Message(msgroot, text="Let me help you out here...")
-                kbedit.google_search_removal()
-                isPaused = False
-            if(count >= 30000 and count < 30100):
-                msg = Message(msgroot, text = "Ok, let's play a game. Click keys to beat minesweeper")
-                kbedit.minesweep_keys
-                isPaused = False
+#            if(count>100 and count%10000 <= 100):
+#                msg = Message(msgroot, text="Let me help you out here...")
+#                kbedit.google_search_removal()
+#                isPaused = False
+#            if(count>100 and count%30000 <= 100):
+#                msg = Message(msgroot, text = "Ok, let's play a game. Click keys to beat minesweeper")
+#                kbedit.minesweep_keys
+#                isPaused = False
             msg.pack()
             msgroot.deiconify()
             msgroot.update()
