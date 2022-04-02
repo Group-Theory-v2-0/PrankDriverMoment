@@ -9,8 +9,9 @@ def google_search_removal(replace):
             time.sleep(0.4)
             keyboard.send('backspace')
             keyboard.write(replace)
+            keyboard.send('enter')
             break
 
-string1 = "Hi"
+string1 = "Why I will always be single"
 
 google_search_removal(string1)
